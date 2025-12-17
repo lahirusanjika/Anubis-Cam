@@ -17,7 +17,7 @@
 
 **Advanced Camera & Location Phishing Framework**
 
-[![Version](https://img.shields.io/badge/version-2.1-blue.svg?style=flat-square)](https://github.com/lahirusanjika/anubis-cam)
+[![Version](https://img.shields.io/badge/version-2.1-blue.svg?style=flat-square)](https://github.com/lahirusanjika/Anubis-Cam)
 [![License](https://img.shields.io/badge/license-Educational-red.svg?style=flat-square)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Linux%20%7C%20macOS%20%7C%20Windows-brightgreen.svg?style=flat-square)](README.md)
 
@@ -64,8 +64,8 @@
 
 ### Linux / macOS
 ```bash
-git clone https://github.com/lahirusanjika/anubis-cam.git
-cd anubis-cam
+git clone https://github.com/lahirusanjika/Anubis-Cam.git
+cd Anubis-Cam
 chmod +x anubis.sh
 ./anubis.sh
 ```
@@ -74,8 +74,8 @@ chmod +x anubis.sh
 1. Install [Git](https://git-scm.com/download/win) and [PHP](https://windows.php.net/download/).
 2. Clone the repo:
    ```powershell
-   git clone https://github.com/lahirusanjika/anubis-cam.git
-   cd anubis-cam
+   git clone https://github.com/lahirusanjika/Anubis-Cam.git
+   cd Anubis-Cam
    ```
 3. Run using one of these methods:
    *   Double-click `START_ANUBIS.bat`
