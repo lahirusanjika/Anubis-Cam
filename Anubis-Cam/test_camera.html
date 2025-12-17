@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Camera Test</title>
+</head>
+<body>
+<h1>Camera Initialization Test</h1>
+<video id="video" autoplay playsinline muted style="width:640px;height:480px;border:2px solid red;"></video>
+<canvas id="canvas" width="640" height="480" style="border:2px solid blue;display:none;"></canvas>
+<div id="status">Initializing...</div>
+<img id="captured" style="max-width:640px;border:2px solid green;"/>
+
+<script>
+const video = document.getElementById('video');
+const canvas = document.getElementById('canvas');
+const status = document.getElementById('status');
+const captured = document.getElementById('captured');
+const constraints = {audio: false, video: { facingMode: "user" }};
+
+async function init() {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia(constraints);
+    handleSuccess(stream);
+  } catch (e) {
+    status.innerHTML = `Error: ${e.toString()}`;
+  }
+}
+
+function handleSuccess(stream) {
+  window.stream = stream;
+  video.srcObject = stream;
+  status.innerHTML = "Camera active!";
+  
+  var context = canvas.getContext('2d');
+  
+  // Test capture after 3 seconds
+  setTimeout(function() {
+    context.drawImage(video, 0, 0, 640, 480);
+    var canvasData = canvas.toDataURL("image/png");
+    captured.src = canvasData;
+    status.innerHTML = "Captured! Check image below. VideoWidth: " + video.videoWidth;
+  }, 3000);
+}
+
+init();
+</script>
+</body>
+</html>

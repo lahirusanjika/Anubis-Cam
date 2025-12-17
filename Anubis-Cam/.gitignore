@@ -1,0 +1,28 @@
+# Binaries
+cloudflared
+cloudflared.exe
+ngrok
+ngrok.exe
+ngrok.zip
+ngrok.tgz
+
+# Logs and captured data
+*.log
+ip.txt
+saved.ip.txt
+location_*.txt
+saved.locations.txt
+cam_*.png
+current_location.txt
+current_location.bak
+images/*
+saved_locations/*
+!images/.gitkeep
+!saved_locations/.gitkeep
+
+# Temporary files
+index.php
+index2.html
+index3.html
+wget-log
+
